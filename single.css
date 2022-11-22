@@ -1,0 +1,31 @@
+/*single.css is the styles that are unique to single.php*/
+body.single {
+    background-color: coral;
+}
+
+/*Comments*/
+/* #comments 自建的ID(見comment.php) 是個<ol>*/
+#comments {
+    /* background-color: #fff; */
+    color: #000;
+    padding-left: 0;
+    /*reset default css for ol/ul */
+}
+
+#comments li {
+    list-style: none;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 1rem;
+    margin-top: .5rem;
+}
+
+/* .bypostauthor => post作者的留言(WP自動生成) */
+#comments li.bypostauthor {
+    background-color: coral;
+    color: #fff;
+}
+
+/* 留言頭像的class (WP自動生成) */
+.avatar {
+    border-radius: 50%;
+}

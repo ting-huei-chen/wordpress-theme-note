@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/* 
+Theme Name: Client Name 2022
+Author: Ting-Huei Chen
+Version: 0.1.0
+Author URI: https://www.lihoworld.com/
+Description: The theme we built in MMDA 324 Web Communication 3 (Fall 2022)
+ */
+/* version naming convention major.minor.revision */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(46, 44, 51);
+    color: aliceblue;
+    font-family: 'Poppins', sans-serif;
+}
+
+body.home main {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    max-width: 100ch;
+    margin: 0 auto;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+main .card {
+    border: solid 1px aliceblue;
+    border-radius: .5rem;
+    padding: .8rem;
+}
+
+header {
+    background-color: aliceblue;
+    display: flex;
+    padding: 1rem;
+    align-items: center;
+}
+
+header nav ul {
+    display: flex;
+    padding-left: 0;
+}
+
+header nav ul li {
+    padding: 1rem;
+    list-style: none;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) .5s;
+}
+
+header nav ul li:hover {
+    background-color: cadetblue;
+}
+
+header nav ul li:hover~header nav ul li a {
+    color: aliceblue;
+}
+
+main a {
+    color: cadetblue;
+}
+
+/*Post Styles*/
+#two-column {
+    display: flex;
+    max-width: 100ch;
+    gap: 1rem;
+    margin: 0 auto;
+}
+
+#two-column article {
+    flex: 7;
+}
+
+#two-column #sidebar {
+    flex: 2;
+}
