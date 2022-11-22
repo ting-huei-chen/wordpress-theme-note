@@ -57,6 +57,9 @@ This is a study note for SAIT MMDA324 Wordpress theme class.
 </a>
 </h1>
 ```
+![blog_info](images/blog_info.jpg)
+bloginfo('name')
+bloginfo('description')
 
 
 ## Author
