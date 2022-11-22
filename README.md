@@ -59,6 +59,39 @@ Description: The theme we built in MMDA 324 Web Communication 3 (Fall 2022)
 
 ### Link file
 
+如何把CSS連到WordPress?
+
+- 先把連結功能加進functions.php
+(實際使用情況詳見functions.php line 3)
+
+```php
+add_theme_support('html5', array('comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script'));
+add_theme_support('title-tag');
+```
+
+- 把CSS加入序列(get_stylesheet_uri()是用於自動定位style.css這個檔案的路徑)
+(實際使用情況詳見functions.php line 6)
+```php
+function linked_assets()
+{
+    wp_enqueue_style('main', get_stylesheet_uri());
+    if (is_page()) {
+        wp_enqueue_style('page-styles', get_template_directory_uri() . '/page.css');
+    } else if (is_single()) {
+        wp_enqueue_style('page-styles', get_template_directory_uri() . '/single.css');
+    }
+}
+```
+
+- 把序列裡的檔案(剛剛連的CSS)加入WP
+(實際使用情況詳見functions.php line 16)
+
+```php
+add_action('wp_enqueue_scripts', 'linked_assets');
+```
+
+- 最後在head裡面加入wp_head()
+(實際使用情況詳見header.php line 7)
 ```php
 <head>
     <meta charset="utf-8">
@@ -99,6 +132,9 @@ Description: The theme we built in MMDA 324 Web Communication 3 (Fall 2022)
 ### Menu
 
 ### Widgets
+
+
+### Comments
 
 ## Author
 
