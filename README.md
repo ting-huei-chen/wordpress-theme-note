@@ -131,6 +131,44 @@ add_action('wp_enqueue_scripts', 'linked_assets');
 
 ### Menu
 
+Menu就是一般會出現在nav裡的東西
+以下是操作步驟
+
+- 先在functions.php裡新建menu (詳見 line 19)
+```php
+function my_menus()
+{
+    register_nav_menu('header-menu', 'Main Menu (Header)');
+    register_nav_menu('mobile-menu', 'Mobile Menu (Header)');
+}
+//語法是 register_nav_menu(自己取個id, 後臺看見的名字);
+```
+
+- 然後加入WP (詳見functions.php line 24)
+```php
+add_action('after_setup_theme', 'my_menus');
+// 這裡的my_menus要跟上面的功能寫一樣的名字
+```
+
+- 接下來在WP後台設定好
+位置 Appearance > Menus
+![menu-setting](images/menu.jpg)
+
+- 最後在需要menu的地方貼上
+(實際使用情況和條件式詳見header.php line 20)
+
+```php
+wp_nav_menu(array(
+                'theme_location' => 'header-menu',
+                'container' => 'nav',
+                'container_id' => 'main-nav'
+            ));
+// 語法 array('theme_location' => '剛剛取的id','container' => '外面包什麼tag','container_id' => '幫外層取個id')
+```
+
+
+
+
 ### Widgets
 
 
