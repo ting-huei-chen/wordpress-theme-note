@@ -16,7 +16,8 @@ This is a study note for SAIT MMDA324 Wordpress theme class.
   - [Header](#header)
   - [Footer](#footer)
   - [h1](#h1)
-  - [Useful resources](#useful-resources)
+  - [Menu](#menu)
+  - [Sidebar](#widgets)
 - [Author](#author)
 
 ## WordPress Templates
@@ -131,8 +132,7 @@ add_action('wp_enqueue_scripts', 'linked_assets');
 
 ### Menu
 
-Menu就是一般會出現在nav裡的東西
-以下是操作步驟
+Menu就是一般會出現在nav裡的東西，以下是操作步驟
 
 - 先在functions.php裡新建menu (詳見 line 19)
 ```php
@@ -169,10 +169,93 @@ wp_nav_menu(array(
 
 
 
-### Widgets
+### Sidebar
+Sidebar === Widgets，可以放社群媒體ICON、近期貼文清單、最新留言等等，以下是操作步驟。
 
+- 先在functions.php裡新建Widget (詳見 line 27)
+```php
+function widgets()
+{
+    register_sidebar(array(
+        'name' => 'Blog Post Sidebar', //取一個後台看到的名字
+        'id' => 'blog-sidebar', //取一個id
+        'before_widget' => '<div class="widget">',//前面要放什麼tag?
+        'after_widget' => '</div>',//後面要放什麼tag?(以下同理)
+        'before_title' => '<h3>',
+        'after_title' => '</h3>',
+    ));
+}
+```
+
+- 加入到WP (現在後台就找的到widgets了)
+(詳見functions.php line 27)
+```php
+add_action('widgets_init', 'widgets');
+//'widgets'是上面取的funciton名稱
+```
+- 在WP後台設定需要的widgets
+![widgets](images/sidebar.jpg)
+
+- 新增一個sidebar.php檔案，填入
+```html
+<aside id="sidebar">通常是用aside tag</aside>
+```
+- 貼上我們剛剛建立的widgets
+(實際使用情況和條件式詳見sidebar.php line 6)
+```php
+dynamic_sidebar('blog-sidebar');
+//這裡的'blog-sidebar'是剛剛我們自己取的id
+```
+
+- 最後在需要使用這個sidebar的地方貼上
+(實際使用情況和條件式詳見single.php line 25)
+```php
+if (is_active_sidebar('blog-sidebar')) {
+        get_sidebar();
+    }
+//這裡的'blog-sidebar'是剛剛我們自己取的id
+```
 
 ### Comments
+
+留言區(Comments)只會在single post底下出現，以下是操作步驟。
+> 留言區開關及相關設定: WP面板 > Settings > Discussion Settings
+
+- 新增comments.php檔案，填入
+```php
+if (comments_open()){
+    // 如果留言區有開著，顯示以下
+    // ...
+}
+```
+(實際使用詳見comments.php line 3)
+
+- 同上地方，填入需要的內容
+```php
+if (have_comments()) {
+// 如果有人留言，印出以下
+    echo '<h3>';
+    // 顯示留言數語法 comments_number(0個的話寫這句,一個的話寫這句,二以上的話寫這句)
+    comments_number('No comments on this post', 'One comment', '% Comments');
+    echo '</h3>';
+
+    echo '<ol id="comment-list">';
+    wp_list_comments(array(
+        'style' => 'ol',
+        'avatar_size' => 64,
+        'reverse_top_level' => true //如何排列留言(新到舊)
+    ));
+    echo '</ol>';
+};
+//插入回覆表單(留言框)
+comment_form();
+```
+
+- 然後就在需要的位置放留言區(詳見single.php line 20)
+
+```php
+comments_template();
+```
 
 ## Author
 

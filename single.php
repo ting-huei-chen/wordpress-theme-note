@@ -20,12 +20,15 @@ get_header();
         comments_template(); //attach comments.php here
         ?>
     </article>
-    <aside>
-        <?php
-        if (is_active_sidebar('blog-sidebar')) {
-            get_sidebar();
-        }
-        ?>
-    </aside>
+
+    <?php
+    if (is_active_sidebar('blog-sidebar')) {
+        get_sidebar();
+    }
+    // 與此Sidebar相關請見 sidebar.php line 4
+    // 與此Sidebar相關請見 functions.php line 29
+    // 與此Sidebar相關請見 WP ADMIN > Appearance > Widgets
+    ?>
+
 </div>
 <?php get_footer(); ?>
