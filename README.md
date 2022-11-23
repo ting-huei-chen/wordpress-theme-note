@@ -34,7 +34,7 @@ The further to the left, the more specific
 ### Templates
 
 The order below is the recommended file creating order. **the name must be named according to the regulations.**
-** this mark means it is a block element, not a page, you need to use the include or get function to put in a page in order to see them.
+<br>** this mark means it is a block element, not a page, you need to use the include or get function to put in a page in order to see them.
 
 - style.css -> The general CSS, the theme information should be written in it, other CSS stylesheets can be created separately according to different templates
 - functions.php -> You have to write the funciton so that you can see features in backend(dashboard)
