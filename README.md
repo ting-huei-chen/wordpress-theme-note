@@ -1,52 +1,59 @@
-# WordPress Theme學習筆記
+[Mandarin version](README.zh-TW.md)
+# WordPress Theme Study Note
 
 This is a study note for SAIT MMDA324 Wordpress theme class.
+> all the "dashboard" are refering to WordPress backend dashboard.
 
 ## Update
 
-🆕Comments 留言
+🆕Comments
 
 ## Table of contents
 
 - [WordPress Theme](#theme)
-  - [層級](#hierarchy)
+  - [Hierarchy](#hierarchy)
   - [Templates](#templates)
-- [元件](#elements)
+- [Elements](#elements)
   - [Link file](#head)
-  - [Header](#header)
-  - [Footer](#footer)
   - [h1](#h1)
   - [Menu](#menu)
-  - [Sidebar](#widgets)
+  - [Sidebar](#sidebar)
+  - [Comments](#comments)
 - [Author](#author)
 
 ## WordPress Templates
 
-### 層級
+### Hierarchy
+
+The further to the right, the more general
+The further to the left, the more specific
+
+![hierarchy](https://developer.wordpress.org/files/2014/10/Screenshot-2019-01-23-00.20.04.png)
+[Source](https://developer.wordpress.org/)
 
 ### Templates
 
-順序為推薦建檔順序，名稱一定要按照規定取名。
-**代表他是一個區塊，需要用include或是get功能放進某一頁裡面才看得到
+The order below is the recommended file creating order. **the name must be named according to the regulations.**
+** this mark means it is a block element, not a page, you need to use the include or get function to put in a page in order to see them.
 
-- style.css -> 最主要的通用CSS，主題資訊要寫在裡面，其他CSS可以依照不同樣板各別開檔案
-- functions.php -> 要寫了funciton後臺才會開功能哦!
-- index.php -> 最籠統的一頁，沒有特別分類的都是它(預設放blog post的地方也是這裡)
-- header.php / footer.php -> 可以共用的區塊**
-- page.php -> 所有不是post的頁面
-- single.php -> 單個post的頁面
-- sidebar.php -> 開啟widgets的地方，跟header一樣可以共用**
-- archive.php -> 分類過的頁面，預設是照月份分類
-- comments.php -> 留言的區塊**
-- searchform.php -> 搜尋欄**
-- search.php -> 搜尋結果頁面
+- style.css -> The general CSS, the theme information should be written in it, other CSS stylesheets can be created separately according to different templates
+- functions.php -> You have to write the funciton so that you can see features in backend(dashboard)
+- index.php -> The most general page, it is the last fallback option. (the default place to put blog post is also here)
+- header.php / footer.php -> The reusable components**
+- page.php -> The pages that is **not post**
+- single.php -> The single post
+- sidebar.php -> The place that we activate widgets, all sidebar can share this file**
+- archive.php -> Archive pages, the default catagorize them by months
+- comments.php -> The comments and comment form components**
+- searchform.php -> The search bar**
+- search.php -> The search result page
 
 ## First Step
 
-先幫主題取名才找得到!
+**You need to name your theme in order to see them in dashboard**
 
 ```css
-@import url('記得先import字體!');
+@import url('Remember to import your font at the first line!');
 /* 
 Theme Name: Client Name 2022
 Author: Your Name
@@ -56,22 +63,22 @@ Description: The theme we built in MMDA 324 Web Communication 3 (Fall 2022)
  */
  ```
 
-## 元件
+## Elements
 
 ### Link file
 
-如何把CSS連到WordPress?
+How to link CSS files to WordPress?
 
-- 先把連結功能加進functions.php
-(實際使用情況詳見functions.php line 3)
+1. First add the link function to functions.php
+(see details at functions.php line 3)
 
 ```php
 add_theme_support('html5', array('comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script'));
 add_theme_support('title-tag');
 ```
 
-- 把CSS加入序列(get_stylesheet_uri()是用於自動定位style.css這個檔案的路徑)
-(實際使用情況詳見functions.php line 6)
+2. Add all the CSS you need to the sequence. (The function get_stylesheet_uri() is used to automatically locate the path to the file style.css)
+(see details at functions.php line 6)
 ```php
 function linked_assets()
 {
@@ -84,15 +91,15 @@ function linked_assets()
 }
 ```
 
-- 把序列裡的檔案(剛剛連的CSS)加入WP
-(實際使用情況詳見functions.php line 16)
+3. Activate the function we made
+(see details at functions.php line 16)
 
 ```php
 add_action('wp_enqueue_scripts', 'linked_assets');
 ```
 
-- 最後在head裡面加入wp_head()
-(實際使用情況詳見header.php line 7)
+4. Finally, add wp_head() to the <head> tag
+(see details at header.php line 7)
 ```php
 <head>
     <meta charset="utf-8">
@@ -102,19 +109,11 @@ add_action('wp_enqueue_scripts', 'linked_assets');
 ```
 
 
-### Header
-
-
-
-### Footer
-
-
-
 ### h1
 
-#### clickable logo 
-用h1和<a>把LOGO圖片包起來，以下範例
-(實際使用情況詳見header.php line 12)
+#### Clickable logo 
+Use <h1> and <a> to wrap up the logo image, here is an example
+(see details at header.php line 12)
 
 ```php
 <h1>
@@ -125,37 +124,37 @@ add_action('wp_enqueue_scripts', 'linked_assets');
 ```
 #### blog_info()
 
-就是WordPress的基本內容，設定在後台的setting > general
+It is the meta data (basic info) of WordPress, you can change them in the dashboard setting > general
 ![blog_info](images/blog_info.jpg)
-- bloginfo('name') >> 網站名稱 (Website Title)
-- bloginfo('description') >> 網站簡述 (Tagline)
+- bloginfo('name') >> Website Title
+- bloginfo('description') >> Tagline
 
 ### Menu
 
-Menu就是一般會出現在nav裡的東西，以下是操作步驟
+Menu is the stuff that usually appears in the nav, here are the steps
 
-- 先在functions.php裡新建menu (詳見 line 19)
+1. Create the menus you neeed in functions.php (see details at line 19)
 ```php
 function my_menus()
 {
     register_nav_menu('header-menu', 'Main Menu (Header)');
     register_nav_menu('mobile-menu', 'Mobile Menu (Header)');
 }
-//語法是 register_nav_menu(自己取個id, 後臺看見的名字);
+//Syntax register_nav_menu('Give id for html', 'Give a name to see in dashboard');
 ```
 
-- 然後加入WP (詳見functions.php line 24)
+2. Activate the function we made (see details at functions.php line 24)
 ```php
 add_action('after_setup_theme', 'my_menus');
-// 這裡的my_menus要跟上面的功能寫一樣的名字
+// The 'my_menus' here is the function name we just made
 ```
 
-- 接下來在WP後台設定好
-位置 Appearance > Menus
+3. Setting corresponding menu in dashboard
+> Dashboard > Appearance > Menus
 ![menu-setting](images/menu.jpg)
 
-- 最後在需要menu的地方貼上
-(實際使用情況和條件式詳見header.php line 20)
+4. Paste the menu at the place you wish
+(see details and conditions at header.php line 20)
 
 ```php
 wp_nav_menu(array(
@@ -163,79 +162,81 @@ wp_nav_menu(array(
                 'container' => 'nav',
                 'container_id' => 'main-nav'
             ));
-// 語法 array('theme_location' => '剛剛取的id','container' => '外面包什麼tag','container_id' => '幫外層取個id')
+// Syntax array('theme_location' => 'The id we register','container' => 'the tag wrap with','container_id' => 'give wrapper a tag')
 ```
 
 
 
 
 ### Sidebar
-Sidebar === Widgets，可以放社群媒體ICON、近期貼文清單、最新留言等等，以下是操作步驟。
+**Sidebar === Widgets**
+ We can put stuffs such as social icons, latest post, calendar in sidebar. Here's the step:
 
-- 先在functions.php裡新建Widget (詳見 line 27)
+1. First create new widgets in functions.php (see details at line 27)
 ```php
 function widgets()
 {
     register_sidebar(array(
-        'name' => 'Blog Post Sidebar', //取一個後台看到的名字
-        'id' => 'blog-sidebar', //取一個id
-        'before_widget' => '<div class="widget">',//前面要放什麼tag?
-        'after_widget' => '</div>',//後面要放什麼tag?(以下同理)
-        'before_title' => '<h3>',
-        'after_title' => '</h3>',
+        'name' => 'Blog Post Sidebar', //Give a name to see in dashboard
+        'id' => 'blog-sidebar', //Give an id to see in HTML
+        'before_widget' => '<div class="widget">', //The tag wrap our widgets
+        'after_widget' => '</div>', //The tag wrap our widgets
+        'before_title' => '<h3>', //The tag wrap the title in widgets
+        'after_title' => '</h3>', //The tag wrap the title in widgets
     ));
 }
 ```
 
-- 加入到WP (現在後台就找的到widgets了)
-(詳見functions.php line 27)
+2. Activate the function we just made, Now we can see widgets in the dashboard
+(see details at functions.php line 27)
 ```php
 add_action('widgets_init', 'widgets');
-//'widgets'是上面取的funciton名稱
+//'widgets' here is the function name we just created
 ```
-- 在WP後台設定需要的widgets
+3. Set up the widgets' content in the dashboard
+> Dashboard > Appearance > Widgets
 ![widgets](images/sidebar.jpg)
 
-- 新增一個sidebar.php檔案，填入
+4. Create sidebar.php, then fill in:
 ```html
-<aside id="sidebar">通常是用aside tag</aside>
+<aside id="sidebar">usually we use aside tag for sidebar</aside>
 ```
-- 貼上我們剛剛建立的widgets
-(實際使用情況和條件式詳見sidebar.php line 6)
+5. Activate the widgets/sidebar we made
+(see details and conditions at sidebar.php line 6)
 ```php
 dynamic_sidebar('blog-sidebar');
-//這裡的'blog-sidebar'是剛剛我們自己取的id
+//The 'blog-sidebar' here id the id we register in funcitons.php (see details at line 27)
 ```
 
-- 最後在需要使用這個sidebar的地方貼上
-(實際使用情況和條件式詳見single.php line 25)
+- Finally, paste the sidebar in the place we need those widgets, in this case I use it in single post:
+(see details and conditions at single.php line 25)
 ```php
 if (is_active_sidebar('blog-sidebar')) {
         get_sidebar();
     }
-//這裡的'blog-sidebar'是剛剛我們自己取的id
+//The 'blog-sidebar' here id the id we register in funcitons.php (see details at line 27)
 ```
+> For more info see [Document - Sidebar](https://developer.wordpress.org/themes/functionality/sidebars/)
 
 ### Comments
 
-留言區(Comments)只會在single post底下出現，以下是操作步驟。
-> 留言區開關及相關設定: WP面板 > Settings > Discussion Settings
+Comments only show in single post, the steps to set up comments:
+> to turn on/off comments and more, go to comments setting: Dashboard > Settings > Discussion Settings
 
-- 新增comments.php檔案，填入
+1. Create comments.php, fill in:
 ```php
 if (comments_open()){
-    // 如果留言區有開著，顯示以下
-    // ...
+    // if comment area is open, do...
 }
 ```
-(實際使用詳見comments.php line 3)
+(see details at comments.php line 3)
 
-- 同上地方，填入需要的內容
+2. Same place, print the comment list and comment form if comment area is open
 ```php
 if (have_comments()) {
-// 如果有人留言，印出以下
+// if there is comment, print...
     echo '<h3>';
-    // 顯示留言數語法 comments_number(0個的話寫這句,一個的話寫這句,二以上的話寫這句)
+    // Syntax comments_number("if no comments print this" ,"if only one comment print this", ""if more than one comments print this"")
     comments_number('No comments on this post', 'One comment', '% Comments');
     echo '</h3>';
 
@@ -243,15 +244,15 @@ if (have_comments()) {
     wp_list_comments(array(
         'style' => 'ol',
         'avatar_size' => 64,
-        'reverse_top_level' => true //如何排列留言(新到舊)
+        'reverse_top_level' => true //Sort comments new to old
     ));
     echo '</ol>';
 };
-//插入回覆表單(留言框)
+//Insert a comment form
 comment_form();
 ```
 
-- 然後就在需要的位置放留言區(詳見single.php line 20)
+3. Lastly, place the comment area in the place you need (see details at single.php line 20)
 
 ```php
 comments_template();
