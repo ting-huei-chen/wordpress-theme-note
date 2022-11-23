@@ -112,7 +112,7 @@ add_action('wp_enqueue_scripts', 'linked_assets');
 ### h1
 
 #### Clickable logo 
-Use <h1> and <a> to wrap up the logo image, here is an example
+Use ```<h1>``` and ```<a>``` to wrap up the logo image, here is an example
 (see details at header.php line 12)
 
 ```php
